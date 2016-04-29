@@ -50,6 +50,7 @@ public class Actividad implements Serializable {
         return hash;
     }
 
+    //arreglamos el equals para que no sea CaseSensitive
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -59,10 +60,8 @@ public class Actividad implements Serializable {
             return false;
         }
         final Actividad other = (Actividad) obj;
-        if (!Objects.equals(this.nombre, other.nombre)) {
-            return false;
-        }
-        return true;
+        return this.nombre.equalsIgnoreCase(other.getNombre());
+        
     }
 
    
