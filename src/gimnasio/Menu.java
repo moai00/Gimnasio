@@ -44,26 +44,54 @@ public class Menu {
 
         } while (opcion != 0);
     }
-private void nuevoSocio(){
-    int nsocio;
-    boolean existe;
-    do{
-        existe = false;
-        nsocio = EntradaDatos.pedirEntero("Nº de socio");
-        if (nsocio <= 0){
-            System.out.println("El nº de socio no pude ser menor o iqual a 0");
-        }else{
-            Socio s = new Socio();
-            s.setNumSocio(nsocio);
-            existe = misSocios.existe(s);
-            if(existe){
-                System.out.println("Ya existe un socio con ese numero");
+
+    private void nuevoSocio() {
+        int nsocio;
+        boolean existe;
+        do {
+            existe = false;
+            nsocio = EntradaDatos.pedirEntero("Nº de socio");
+            if (nsocio <= 0) {
+                System.out.println("El nº de socio no pude ser menor o iqual a 0");
+            } else {
+                Socio s = new Socio();
+                s.setNumSocio(nsocio);
+                existe = misSocios.existe(s);
+                if (existe) {
+                    System.out.println("Ya existe un socio con ese numero");
+                }
             }
-        }
-        
-    }while (nsocio <= 0);
-}
-    
+
+        } while (nsocio <= 0);
+        String nombre = EntradaDatos.pedirCadena("Nombre del Socio");
+        String telefono = EntradaDatos.pedirCadena("Telefono");
+        double cuota;
+        do {
+            cuota = EntradaDatos.pedirDouble("Cuota mensual");
+            if (cuota < 10) {
+                System.out.println("La cuota minima es de 10 euros");
+
+            }
+
+        } while (cuota < 0);
+        String respuesta;
+        boolean vip = false;
+        do {
+            respuesta = EntradaDatos.pedirCadena("¿Es socio vip (S/N)?");
+            if (respuesta.equalsIgnoreCase("s")) {
+                vip = true;
+            } else if (respuesta.equalsIgnoreCase("n")) {
+                vip = false;
+            } else {
+                System.out.println("Respuesta incorrecta. Debes indicar s o n");
+            }
+        } while (!respuesta.equalsIgnoreCase("s") && !respuesta.equalsIgnoreCase("n"));
+        Socio s = new Socio(nsocio, nombre, telefono, cuota, vip);
+        misSocios.altaSocio(s);
+        socioFile.grabar(misSocios);
+        System.out.println("Socio dado de alta");
+    }
+
     private void mostrarMenu() {
         System.out.println("GIMNASIO NOTEROMPAS");
         System.out.println("1. Nuevo Socio");
